@@ -2,17 +2,17 @@
 
 ## NAME
 
-**idletee** - copy standard input to standard output while monitoring data flow patterns
+**idlecat** - copy standard input to standard output while monitoring data flow patterns
 
 ## SYNOPSIS
 
 ```
-idletee [OPTION]...
+idlecat [OPTION]...
 ```
 
 ## DESCRIPTION
 
-**idletee** is a utility that copies data from standard input to standard output while monitoring the "idleness" of the data stream. It can detect when a data stream becomes active after being inactive for a period, when it becomes inactive after being active, or when it reaches an end-of-file condition.
+**idlecat** is a utility that copies data from standard input to standard output while monitoring the "idleness" of the data stream. It can detect when a data stream becomes active after being inactive for a period, when it becomes inactive after being active, or when it reaches an end-of-file condition.
 
 This utility is especially useful when included in pipelines to detect and react to unusual events, such as:
 
@@ -20,7 +20,7 @@ This utility is especially useful when included in pipelines to detect and react
 - Log files that suddenly stop growing or resume after inactivity
 - Any stream-based process that exhibits relevant patterns of activity and inactivity
 
-When **idletee** detects state transitions, it can execute user-defined shell commands to provide notifications or take other actions.
+When **idlecat** detects state transitions, it can execute user-defined shell commands to provide notifications or take other actions.
 
 ## OPTIONS
 
@@ -47,7 +47,7 @@ When **idletee** detects state transitions, it can execute user-defined shell co
 
 ## STATES AND TRANSITIONS
 
-**idletee** operates with two primary states:
+**idlecat** operates with two primary states:
 
 1. **Idle State**: No data has been received for at least the idle timeout period (default: 5 seconds)
 2. **Active State**: Data has been received within the idle timeout period
@@ -63,30 +63,30 @@ The utility starts in the idle state and monitors for the following transitions:
 Monitor a log file for inactivity and play a sound when it stops or starts:
 
 ```bash
-tail -f /var/log/syslog | idletee -I "printf '\007'; echo 'Log active again!'" -A "printf '\007'; echo 'Log stopped!'"
+tail -f /var/log/syslog | idlecat -I "printf '\007'; echo 'Log active again!'" -A "printf '\007'; echo 'Log stopped!'"
 ```
 
 Watch compiler output and be notified when it hangs or resumes:
 
 ```bash
-make -j8 | idletee -t 10 -i 60 -a 60 -I "notify-send 'Compiler resumed'" -A "notify-send 'Compiler may be stuck'"
+make -j8 | idlecat -t 10 -i 60 -a 60 -I "notify-send 'Compiler resumed'" -A "notify-send 'Compiler may be stuck'"
 ```
 
 Monitor a network service and take action when it stops responding:
 
 ```bash
-ping example.com | idletee -A "systemctl restart my-service" -E "echo 'Connection lost' | mail -s 'Service Down' admin@example.com"
+ping example.com | idlecat -A "systemctl restart my-service" -E "echo 'Connection lost' | mail -s 'Service Down' admin@example.com"
 ```
 
 Customize all timing parameters:
 
 ```bash
-somecommand | idletee -t 3 -i 30 -a 45 -I "echo 'Active again'" -A "echo 'Now idle'" -E "echo 'Done'"
+somecommand | idlecat -t 3 -i 30 -a 45 -I "echo 'Active again'" -A "echo 'Now idle'" -E "echo 'Done'"
 ```
 
 ## EXIT STATUS
 
-**idletee** exits with status 0 if it successfully copies all data and reaches EOF normally. It exits with a non-zero status if an error occurs.
+**idlecat** exits with status 0 if it successfully copies all data and reaches EOF normally. It exits with a non-zero status if an error occurs.
 
 ## SEE ALSO
 
@@ -102,4 +102,4 @@ This utility was created to fill a niche between standard Unix utilities like te
 
 ## BUGS
 
-Please report bugs at https://github.com/akovalenko/aigen-idletee
+Please report bugs at https://github.com/akovalenko/aigen-idlecat
