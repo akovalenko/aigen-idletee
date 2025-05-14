@@ -1,4 +1,4 @@
-# IDLETEE(1) - Monitor and React to Data Stream Activity Patterns
+# IDLECAT(1) - Monitor and React to Data Stream Activity Patterns
 
 ## NAME
 
